@@ -1,0 +1,228 @@
+﻿
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	Layout = null;
+}
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Flashcard Flip - Variant 3</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700;800&family=Noto+Sans:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script>
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#36e270",
+                "background-light": "#f6f8f6",
+                "background-dark": "#050B14",
+                "oxford-blue": "#002147",
+              },
+              fontFamily: {
+                "display": ["Lexend", "sans-serif"],
+                "body": ["Noto Sans", "sans-serif"]
+              },
+              borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+    <style>
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+
+        .backface-hidden {
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+
+        /* CSS Hack yerine Class mantığı: .is-flipped sınıfı eklenince döner */
+        .is-flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        body::-webkit-scrollbar {
+            display: none;
+        }
+
+        body {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-[#111713] dark:text-white font-display min-h-screen relative overflow-hidden flex flex-col">
+
+    <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vh] flex items-center justify-center pointer-events-none z-0 overflow-hidden">
+        <svg aria-hidden="true" class="w-[120vh] h-[120vh] text-white opacity-[0.03] -rotate-12" fill="currentColor" viewbox="0 0 48 48">
+            <path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path>
+        </svg>
+    </div>
+
+    <header class="relative z-20 flex items-center justify-between w-full px-6 py-4 md:px-10 lg:px-40 backdrop-blur-sm border-b border-white/5">
+        <div class="flex items-center gap-3 text-white">
+            <div class="size-6 text-primary">
+                <svg fill="currentColor" viewbox="0 0 48 48"><path d="M42.4379 44C42.4379 44 36.0744 33.9038 41.1692 24C46.8624 12.9336 42.2078 4 42.2078 4L7.01134 4C7.01134 4 11.6577 12.932 5.96912 23.9969C0.876273 33.9029 7.27094 44 7.27094 44L42.4379 44Z"></path></svg>
+            </div>
+            <h2 class="text-lg font-bold tracking-tight">Vocabulary App</h2>
+        </div>
+        <div class="flex items-center gap-4">
+            <button class="hidden md:flex items-center justify-center h-9 px-4 rounded-lg bg-white/5 hover:bg-white/10 text-white text-sm font-medium transition-colors border border-white/10">
+                Back to Dashboard
+            </button>
+            <a href="#profile-link" class="block rounded-full focus:outline-none focus:ring-2 focus:ring-primary">
+                <div class="bg-center bg-no-repeat bg-cover rounded-full size-10 border-2 border-white/10 hover:border-primary/50 transition-colors" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBb-buMKLSjBRqTH3-HV9y5TVtgz5Ir0FJYXOodYyrfWvbZZ7wHgvWibmqQmPI5aCkgirQPJi9p_fhVXZokTUMMXJXAZCH4G5fGoKXXWv4KOT6aU6rOR0XVikA2BDcFQTMWrH1q9DfkGqO4hsk8incgVGPfNZKCTC51-TEzUqN0fSGBx89Z1Ph1MO8_ZtET5FknsNLlhoNjhrG-NEVwsxP3BS3w9mlG2_A-Rx7KDoDDBeIq4epmk2ZWNXLc0Y_1X5HWWjIvytHh_KI");'></div>
+            </a>
+        </div>
+    </header>
+
+    <main class="relative z-10 flex-1 flex flex-col items-center justify-center p-4 w-full max-w-7xl mx-auto">
+
+        <div class="mb-8 flex flex-col items-center gap-2">
+            <div class="flex items-center gap-2 text-primary/80 text-sm font-semibold tracking-wide uppercase">
+                <span class="material-symbols-outlined text-lg">style</span>
+                Daily Goal
+            </div>
+            <div class="flex items-center gap-3">
+                <span id="progress-text" class="text-white/60 text-sm">Word 5 of 20</span>
+
+                <div class="w-32 h-1.5 bg-white/10 rounded-full overflow-hidden">
+                    <div id="progress-fill" class="h-full bg-primary w-1/4 rounded-full shadow-[0_0_10px_rgba(54,226,112,0.5)] transition-all duration-500"></div>
+                </div>
+            </div>
+        </div>
+
+        <div id="flashcard" class="card-container w-full max-w-lg aspect-[4/5] md:aspect-[5/3] perspective-1000 group cursor-pointer" onclick="toggleCard()">
+            <div class="card-inner relative w-full h-full transition-all duration-700 transform-style-3d">
+
+                <div class="absolute inset-0 w-full h-full backface-hidden">
+                    <div class="w-full h-full flex flex-col items-center justify-center p-8 md:p-12 rounded-2xl bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] text-center relative overflow-hidden">
+                        <div class="absolute -top-20 -left-20 w-40 h-40 bg-primary/20 rounded-full blur-[80px]"></div>
+                        <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-[80px]"></div>
+
+                        <div class="relative z-10 flex flex-col items-center flex-1 justify-center w-full">
+                            <span class="inline-block px-3 py-1 mb-6 text-xs font-bold tracking-wider text-white/50 bg-white/5 rounded-full border border-white/5">ADJECTIVE</span>
+                            <h1 class="text-4xl md:text-6xl font-bold text-white mb-4 tracking-tight drop-shadow-sm">@ViewBag.word.EngWord</h1>
+                            <p class="text-xl md:text-2xl text-white/60 font-light font-body">Seviye: @ViewBag.word.Level.ToString()</p>
+
+                            <div class="mt-12">
+                                <div class="group/btn inline-flex items-center justify-center gap-2 h-12 px-8 rounded-lg border border-white/30 hover:border-white/60 hover:bg-white/5 text-white text-sm font-bold tracking-widest uppercase transition-all duration-300">
+                                    <span class="material-symbols-outlined text-[20px] group-hover/btn:rotate-180 transition-transform duration-500">sync_alt</span>
+                                    <span>Anlamı</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="absolute inset-0 w-full h-full backface-hidden rotate-y-180">
+                    <div class="w-full h-full flex flex-col items-center justify-center p-8 md:p-12 rounded-2xl bg-gradient-to-bl from-white/10 to-white/5 backdrop-blur-xl border border-white/20 shadow-[0_8px_32px_0_rgba(0,0,0,0.36)] text-center relative overflow-hidden">
+                        <div class="absolute -top-20 -right-20 w-40 h-40 bg-primary/10 rounded-full blur-[80px]"></div>
+
+                        <div class="relative z-10 flex flex-col items-center flex-1 justify-center w-full">
+                            <div class="flex items-center gap-2 mb-6">
+                                <span class="material-symbols-outlined text-primary">lightbulb</span>
+                                <span class="text-sm font-bold tracking-wider text-primary uppercase">Definition</span>
+                            </div>
+                            <p class="text-2xl md:text-3xl font-medium text-white leading-snug mb-8">
+                                @await Component.InvokeAsync("WordMeanList", new { wordId = @ViewBag.word.Id })
+                            </p>
+                            <div class="w-full max-w-sm p-4 rounded-xl bg-black/20 border border-white/5 mb-8">
+                                <p class="text-white/80 italic font-body text-sm md:text-base">
+                                    "Fashions are <span class="text-primary font-bold not-italic">ephemeral</span>, changing with every season."
+                                </p>
+                            </div>
+                            <div>
+                                <div class="text-white/50 hover:text-white text-sm font-medium flex items-center gap-2 transition-colors">
+                                    <span class="material-symbols-outlined text-[18px]">undo</span>
+                                    Show Word
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-10 flex flex-col md:flex-row gap-4 w-full max-w-lg">
+            <a href="/WordList/WordListTest/2" class="flex-1 h-14 rounded-lg bg-oxford-blue hover:bg-[#002b5c] text-white text-base font-bold uppercase tracking-wider shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
+                <span class="material-symbols-outlined">bookmark_border</span>
+                Save Word
+            </a>
+            <a asp-controller="WordList" asp-action="WordListTest" asp-route-id="@ViewBag.word.WordListId" class="flex-1 h-14 rounded-lg bg-primary hover:bg-[#2fd465] text-[#050B14] text-base font-bold uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
+                Next Word
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+        </div>
+    </main>
+
+    <footer class="relative z-10 py-6 text-center">
+        <p class="text-white/30 text-xs font-light">
+            Press <span class="font-bold text-white/50 border border-white/20 rounded px-1 mx-1">Space</span> to flip · <span class="font-bold text-white/50 border border-white/20 rounded px-1 mx-1">→</span> for next
+        </p>
+    </footer>
+
+    <script>
+        // Kart Döndürme Fonksiyonu
+        function toggleCard() {
+            const card = document.getElementById('flashcard');
+            card.classList.toggle('is-flipped');
+        }
+
+        // Space Tuşu Desteği
+        document.addEventListener('keydown', function(event) {
+            if (event.code === 'Space') {
+                event.preventDefault();
+                toggleCard();
+            }
+        });
+
+        // --- DİNAMİK PROGRESS BAR ---
+        // Bu fonksiyonu backend'den aldığın verilerle çağırabilirsin.
+        // Örnek kullanım: updateProgress(5, 20);
+        function updateProgress(current, total) {
+            // 1. Texti Güncelle
+            const textElement = document.getElementById('progress-text');
+            if(textElement) {
+                textElement.innerText = `Word ${current} of ${total}`;
+            }
+
+            // 2. Bar Genişliğini Güncelle
+            const barElement = document.getElementById('progress-fill');
+            if(barElement) {
+                // Yüzde hesabı
+                let percentage = 0;
+                if(total > 0) {
+                    percentage = (current / total) * 100;
+                }
+                // Genişlik stili ata
+                barElement.style.width = `${percentage}%`;
+            }
+        }
+
+        // Test amaçlı sayfa yüklendiğinde bir örnek çalıştırıyorum:
+        // Sayfa açıldığında 5/20 olarak ayarlanır.
+        // Backend entegrasyonunda bunu kaldırıp kendi scriptinle çağırabilirsin.
+
+        window.onload = function() {
+            updateProgress(5, 20); //TODO: Dinamik yapılacak.
+        };
+    </script>
+</body>
+</html>

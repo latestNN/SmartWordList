@@ -1,0 +1,281 @@
+﻿@model SmartWordList.Models.ViewModels.AppUserSignInViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VocabMaster - Premium Sign Up</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&amp;family=Inter:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "charcoal": "#0a0c10",
+                        "panel-dark": "#161b22",
+                        "accent-blue": "#3b82f6",
+                    },
+                    fontFamily: {
+                        "display": ["Sora", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @@layer utilities {
+            .light-ray {
+                background: radial-gradient(circle at 0% 0%, rgba(59, 130, 246, 0.1) 0%, transparent 60%);
+            }
+
+            .metallic-border {
+                position: relative;
+                background: linear-gradient(90deg, #1e293b, #334155, #1e293b);
+                background-size: 200% auto;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            }
+
+                .metallic-border:hover {
+                    background-position: right center;
+                    box-shadow: 0 0 30px rgba(59, 130, 246, 0.5);
+                }
+            /* DÜZELTİLEN KISIM BURASI */
+            .glass-input {
+                /* HATA: bg-charcoal/50
+                       ÇÖZÜM: bg-charcoal bg-opacity-50
+                    */
+                @@apply bg-charcoal bg-opacity-50 border border-slate-700 border-opacity-50 focus:border-accent-blue focus:border-opacity-50 focus:ring-1 focus:ring-accent-blue focus:ring-opacity-50 transition-all outline-none;
+            }
+
+            .hide-scrollbar {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+
+                .hide-scrollbar::-webkit-scrollbar {
+                    display: none;
+                }
+        }
+    </style>
+</head>
+<body class="bg-charcoal text-slate-200 font-body min-h-screen overflow-hidden">
+    <div class="flex h-screen w-full">
+        <div class="relative hidden lg:flex w-7/12 h-full bg-charcoal flex-col border-r border-white/5 overflow-hidden">
+            <div class="absolute inset-0 light-ray pointer-events-none"></div>
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 pointer-events-none"></div>
+
+            <!-- Header Section -->
+            <div class="relative z-10 flex items-center gap-3 p-16 lg:p-24 pb-8 flex-shrink-0">
+                <div class="size-8 rounded bg-white/5 border border-white/10 flex items-center justify-center backdrop-blur-md">
+                    <span class="material-symbols-outlined text-white text-lg">school</span>
+                </div>
+                <span class="text-white font-display font-bold text-sm tracking-widest uppercase opacity-80">VocabMaster</span>
+            </div>
+
+            <!-- Scrollable Content Section -->
+            <div class="relative z-10 flex-1 overflow-x-auto hide-scrollbar flex" id="slideContainer">
+                <!-- Slide 1: Track Your Progress -->
+                <div class="slide-item flex-shrink-0 w-full h-full py-16 px-16 lg:px-24 flex flex-col justify-start pt-16">
+                    <div class="mb-10 inline-flex p-5 rounded-3xl bg-gradient-to-br from-accent-blue/10 to-transparent border border-accent-blue/20 shadow-[0_0_40px_rgba(59,130,246,0.1)] backdrop-blur-sm w-fit">
+                        <span class="material-symbols-outlined text-5xl text-accent-blue" style="font-variation-settings: 'FILL' 1;">monitoring</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-display font-extrabold text-white leading-[1.1] mb-6 tracking-tight">
+                        Track Your <br />
+                        <span class="text-slate-600">Progress</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 font-light leading-relaxed max-w-md">
+                        Visualize your vocabulary acquisition with precision metrics. Watch your fluency grow day by day with our advanced analytics engine.
+                    </p>
+                </div>
+
+                <!-- Slide 2: Smart Learning -->
+                <div class="slide-item flex-shrink-0 w-full h-full py-16 px-16 lg:px-24 flex flex-col justify-start pt-16">
+                    <div class="mb-10 inline-flex p-5 rounded-3xl bg-gradient-to-br from-green-400/10 to-transparent border border-green-400/20 shadow-[0_0_40px_rgba(74,222,128,0.1)] backdrop-blur-sm w-fit">
+                        <span class="material-symbols-outlined text-5xl text-green-400" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-display font-extrabold text-white leading-[1.1] mb-6 tracking-tight">
+                        Smart <br />
+                        <span class="text-slate-600">Learning</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 font-light leading-relaxed max-w-md">
+                        AI-powered personalization adapts to your learning pace. Get intelligent suggestions tailored to your vocabulary goals and learning style.
+                    </p>
+                </div>
+
+                <!-- Slide 3: Community Driven -->
+                <div class="slide-item flex-shrink-0 w-full h-full py-16 px-16 lg:px-24 flex flex-col justify-start pt-16">
+                    <div class="mb-10 inline-flex p-5 rounded-3xl bg-gradient-to-br from-purple-400/10 to-transparent border border-purple-400/20 shadow-[0_0_40px_rgba(168,85,247,0.1)] backdrop-blur-sm w-fit">
+                        <span class="material-symbols-outlined text-5xl text-purple-400" style="font-variation-settings: 'FILL' 1;">people</span>
+                    </div>
+                    <h1 class="text-5xl lg:text-6xl font-display font-extrabold text-white leading-[1.1] mb-6 tracking-tight">
+                        Community <br />
+                        <span class="text-slate-600">Driven</span>
+                    </h1>
+                    <p class="text-lg text-slate-400 font-light leading-relaxed max-w-md">
+                        Connect with other language enthusiasts. Share your progress, compete in challenges, and learn from a global network of scholars.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Footer Section with Progress Indicators -->
+            <div class="relative z-10 w-full flex items-center justify-between px-16 lg:px-24 py-8 flex-shrink-0 border-t border-white/5">
+                <div class="flex items-center gap-3">
+                    <div class="h-1.5 w-2 bg-slate-800 rounded-full hover:bg-slate-700 transition-all cursor-pointer slide-dot" data-slide="0"></div>
+                    <div class="h-1.5 w-12 bg-accent-blue rounded-full shadow-[0_0_15px_rgba(59,130,246,0.4)] transition-all duration-300 slide-dot" data-slide="1"></div>
+                    <div class="h-1.5 w-2 bg-slate-800 rounded-full hover:bg-slate-700 transition-all cursor-pointer slide-dot" data-slide="2"></div>
+                </div>
+                <div class="text-[10px] font-bold text-slate-700 uppercase tracking-[0.2em]">
+                    <span id="currentSlide">01</span> / 03
+                </div>
+            </div>
+        </div>
+        <div class="w-full lg:w-5/12 h-full bg-panel-dark flex flex-col items-center justify-center px-8 sm:px-16 lg:px-24 relative">
+            <div class="w-full max-w-md">
+                <div class="lg:hidden flex items-center gap-3 mb-12">
+                    <div class="size-10 rounded-lg bg-white/10 flex items-center justify-center">
+                        <span class="material-symbols-outlined text-white text-2xl">school</span>
+                    </div>
+                    <h2 class="text-white text-2xl font-black font-display tracking-tight">VocabMaster</h2>
+                </div>
+                <div class="mb-10">
+                    <h2 class="text-3xl font-bold text-white font-display mb-3">Create Account</h2>
+                    <p class="text-slate-400 text-sm">Join the elite community of linguists and scholars.</p>
+                </div>
+                <form class="space-y-6" asp-action="SignIn">
+                    <div asp-validation-summary="All"></div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2 px-1" asp-for="UserName"></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-accent-blue transition-colors">
+                                <span class="material-symbols-outlined text-xl">person</span>
+                            </div>
+                            <input class="glass-input w-full h-14 pl-12 pr-4 rounded-xl text-white placeholder:text-slate-600" placeholder="John Doe" type="text" asp-for="UserName" />
+                            
+                        </div>
+                        <span asp-validation-for="UserName" class="text-red-500 text-xs mt-1 block font-bold"></span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2 px-1" asp-for="Email"></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-accent-blue transition-colors">
+                                <span class="material-symbols-outlined text-xl">alternate_email</span>
+                            </div>
+                            <input class="glass-input w-full h-14 pl-12 pr-4 rounded-xl text-white placeholder:text-slate-600" placeholder="name@university.edu" type="email" asp-for="Email" />
+                           
+                        </div>
+                        <span asp-validation-for="Email" class="text-red-500 text-xs mt-1 block font-bold"></span>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-widest text-slate-500 mb-2 px-1" asp-for="Sifre"></label>
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-slate-500 group-focus-within:text-accent-blue transition-colors">
+                                <span class="material-symbols-outlined text-xl">lock</span>
+                            </div>
+                            <input class="glass-input w-full h-14 pl-12 pr-4 rounded-xl text-white placeholder:text-slate-600" placeholder="••••••••••••" type="password" asp-for="Sifre" />
+                            
+                        </div>
+                        <span asp-validation-for="Sifre" class="text-red-500 text-xs mt-1 block font-bold"></span>
+                    </div>
+                    <button class="metallic-border w-full h-14 rounded-xl text-white font-display font-bold text-sm tracking-widest uppercase flex items-center justify-center gap-3 transition-all active:scale-[0.98] mt-4 shadow-[0_0_25px_rgba(59,130,246,0.3)]" type="submit">
+                        START LEARNING
+                        <span class="material-symbols-outlined text-lg">arrow_forward</span>
+                    </button>
+                </form>
+                <div class="mt-12 pt-8 border-t border-white/5">
+                    <p class="text-center text-slate-500 text-xs font-medium">
+                        Already a member? <a class="text-white hover:text-accent-blue font-bold transition-colors" href="#">Sign In</a>
+                    </p>
+                </div>
+            </div>
+            <div class="absolute bottom-8 text-[10px] text-slate-600 font-bold tracking-widest uppercase">
+                © 2024 VocabMaster Academic Platform
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Automatic carousel sliding
+        const slideContainer = document.getElementById('slideContainer');
+        const slides = document.querySelectorAll('.slide-item');
+        const slideDots = document.querySelectorAll('.slide-dot');
+        const currentSlideSpan = document.getElementById('currentSlide');
+
+        let currentSlide = 0;
+        const SLIDE_COOLDOWN = 3000; // 3 seconds
+
+        function goToSlide(index) {
+            if (slides.length === 0) return;
+
+            currentSlide = index % slides.length;
+            const slideWidth = slideContainer.clientWidth;
+            const scrollLeft = currentSlide * slideWidth;
+
+            slideContainer.scrollTo({
+                left: scrollLeft,
+                behavior: 'smooth'
+            });
+
+            // Update dots
+            slideDots.forEach((dot, dotIndex) => {
+                if (dotIndex === currentSlide) {
+                    dot.classList.remove('bg-slate-800', 'w-2');
+                    dot.classList.add('bg-accent-blue', 'w-12');
+                } else {
+                    dot.classList.remove('bg-accent-blue', 'w-12');
+                    dot.classList.add('bg-slate-800', 'w-2');
+                }
+            });
+
+            // Update counter
+            currentSlideSpan.textContent = String(currentSlide + 1).padStart(2, '0');
+        }
+
+        function nextSlide() {
+            goToSlide(currentSlide + 1);
+        }
+
+        // Start auto-scroll
+        let autoSlideInterval = setInterval(nextSlide, SLIDE_COOLDOWN);
+
+        // Pause auto-scroll on user interaction
+        slideContainer.addEventListener('mouseenter', () => {
+            clearInterval(autoSlideInterval);
+        });
+
+        // Resume auto-scroll when mouse leaves
+        slideContainer.addEventListener('mouseleave', () => {
+            autoSlideInterval = setInterval(nextSlide, SLIDE_COOLDOWN);
+        });
+
+        // Add click handlers to dots
+        slideDots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                goToSlide(index);
+                // Reset timer
+                clearInterval(autoSlideInterval);
+                autoSlideInterval = setInterval(nextSlide, SLIDE_COOLDOWN);
+            });
+        });
+
+        // Initialize first slide
+        goToSlide(0);
+    </script>
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+    }
+</body>
+</html>

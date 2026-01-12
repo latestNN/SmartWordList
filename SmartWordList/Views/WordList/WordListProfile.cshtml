@@ -1,0 +1,306 @@
+﻿@model List<SmartWordList.Models.Entities.Word>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+	Layout = null;
+}
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>VocabMaster - Word List Detail Table Variant 3</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+
+    <script>
+        tailwind = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f172a", "accent": "#3b82f6",
+                        "background-light": "#F8FAFC", "background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px" },
+                    // Shadowları config'e ekledik ama aşağıda CSS içinde manuel kullanacağız
+                    boxShadow: {
+                        'floating-row': '0 8px 20px -6px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02)',
+                    }
+                },
+            },
+        }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+
+    <style>
+        /* Standart CSS Utilities */
+        .glass-panel {
+            background-color: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-row {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.05), 0 4px 6px -4px rgba(0, 0, 0, 0.02); /* floating-row */
+            transition: all 0.3s ease;
+        }
+
+            .glass-row:hover {
+                background-color: #ffffff;
+                transform: scale(1.005);
+            }
+
+        .glass-header {
+            background-color: rgba(241, 245, 249, 0.5); /* slate-100 / 50 */
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            color: #64748b; /* slate-500 */
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .watermark-container {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 0;
+        }
+
+        .level-badge {
+            padding: 0.25rem 0.625rem;
+            border-radius: 0.375rem;
+            font-size: 0.75rem;
+            font-weight: 700;
+            border-width: 1px;
+        }
+
+        /* Renkleri manuel tanımlıyoruz, apply kullanmıyoruz */
+        .level-A1 {
+            background-color: #f0fdf4;
+            color: #15803d;
+            border-color: #dcfce7;
+        }
+
+        .level-A2 {
+            background-color: #ecfdf5;
+            color: #047857;
+            border-color: #d1fae5;
+        }
+
+        .level-B1 {
+            background-color: #eff6ff;
+            color: #1d4ed8;
+            border-color: #dbeafe;
+        }
+
+        .level-B2 {
+            background-color: #eef2ff;
+            color: #4338ca;
+            border-color: #e0e7ff;
+        }
+
+        .level-C1 {
+            background-color: #faf5ff;
+            color: #7e22ce;
+            border-color: #f3e8ff;
+        }
+
+        .level-C2 {
+            background-color: #fff1f2;
+            color: #be123c;
+            border-color: #ffe4e6;
+        }
+    </style>
+</head>
+
+<body class="bg-[#F8FAFC] text-slate-900 font-display min-h-screen relative overflow-x-hidden selection:bg-slate-200 selection:text-slate-900 transition-colors duration-500">
+    <div class="relative z-10 flex h-auto min-h-screen w-full flex-col">
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white/80 backdrop-blur-md px-10 py-4 sticky top-0 z-50 shadow-sm">
+            <div class="flex items-center gap-4 text-slate-900 group cursor-pointer">
+                <div class="size-10 rounded-xl bg-slate-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 duration-300 shadow-md">
+                    <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">school</span>
+                </div>
+                <h2 class="text-slate-900 text-xl font-bold leading-tight tracking-tight">VocabMaster</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-8">
+                <div class="flex items-center gap-9 hidden md:flex">
+                    <a class="text-slate-500 text-sm font-semibold leading-normal hover:text-slate-900 transition-colors" href="#">Dashboard</a>
+                    <a class="text-slate-500 text-sm font-semibold leading-normal hover:text-slate-900 transition-colors" href="#">My Lists</a>
+                    <a class="text-slate-500 text-sm font-semibold leading-normal hover:text-slate-900 transition-colors" href="#">Progress</a>
+                </div>
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 ring-2 ring-slate-100 shadow-sm cursor-pointer hover:ring-slate-300 transition-all"
+                     style="background-image: url('https://ui-avatars.com/api/?name=User&background=0D8ABC&color=fff');">
+                </div>
+            </div>
+        </header>
+
+        <div class="layout-container flex h-full grow flex-col relative">
+            <div class="watermark-container fixed top-20 left-0 w-full h-full pointer-events-none opacity-[0.03]">
+                <img alt="Background watermark" class="w-[80vw] h-[80vw] max-w-[1000px] max-h-[1000px] object-contain rotate-[-15deg] grayscale" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Coat_of_arms_of_the_University_of_Cambridge.svg/1200px-Coat_of_arms_of_the_University_of_Cambridge.svg.png" />
+            </div>
+
+            <div class="px-4 md:px-10 lg:px-20 xl:px-40 flex flex-1 justify-center py-10 relative z-10">
+                <div class="layout-content-container flex flex-col max-w-[1024px] flex-1 w-full">
+
+                    <div class="flex flex-col gap-6 mb-10">
+                        <div class="flex items-center justify-between">
+                            <button class="group flex items-center gap-2 text-slate-500 hover:text-slate-900 transition-colors text-sm font-semibold pl-1">
+                                <span class="material-symbols-outlined text-lg group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                                Back to Library
+                            </button>
+                            <div class="flex gap-3">
+                                <a asp-controller="WordList" asp-action="WordListTest" asp-route-id="@ViewBag.wordList.Id"
+                                   class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-bold shadow-lg shadow-teal-500/20 hover:shadow-teal-500/30 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
+
+                                    <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+                                    START TEST
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-6 border-b border-slate-200/60">
+                            <div class="flex items-start gap-6">
+                                <div class="shrink-0 pt-1">
+                                    <img alt="Cambridge logo" class="w-20 h-20 object-contain drop-shadow-sm" src="@ViewBag.wordList.LogoUrl" />
+                                </div>
+                                <div>
+                                    <div class="flex items-center gap-3 mb-1">
+                                        <h1 class="text-slate-900 text-3xl font-black leading-tight tracking-tight">@ViewBag.wordList.Name</h1>
+                                        <span class="px-2.5 py-0.5 rounded-full bg-purple-100 text-purple-700 text-[10px] font-bold uppercase tracking-widest border border-purple-200">Official</span>
+                                    </div>
+                                    <div class="flex items-center gap-3 mb-2">
+                                        <p class="text-slate-500 font-medium">1,842 words • High Frequency • Academic & Professional</p>
+                                        <span class="text-slate-300">•</span>
+                                        <a class="flex items-center gap-1 text-slate-500 hover:text-accent transition-colors text-sm font-semibold group" href="#">
+                                            Visit Official Page
+                                            <span class="material-symbols-outlined text-base group-hover:translate-x-0.5 transition-transform">open_in_new</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex items-center gap-3 bg-white p-1.5 rounded-xl border border-slate-200 shadow-sm">
+                                <span class="pl-3 text-xs font-bold text-slate-400 uppercase tracking-wider">Show:</span>
+                                <button class="px-3 py-1.5 rounded-lg bg-slate-900 text-white text-xs font-bold shadow-sm">All</button>
+                                <button class="px-3 py-1.5 rounded-lg hover:bg-slate-50 text-slate-600 text-xs font-bold transition-colors">Learning</button>
+                                <button class="px-3 py-1.5 rounded-lg hover:bg-slate-50 text-slate-600 text-xs font-bold transition-colors">Mastered</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-4 mb-8">
+                        <div class="relative flex-1">
+                            <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+                            <input class="w-full pl-11 pr-4 py-3 rounded-xl border-none bg-white shadow-sm focus:ring-2 focus:ring-slate-200 placeholder:text-slate-400 text-slate-700 font-medium" placeholder="Search for a word or meaning..." type="text" />
+                        </div>
+                        <div class="flex gap-2">
+                            <div class="relative group">
+                                <button class="h-full px-5 py-3 rounded-xl bg-white shadow-sm flex items-center gap-2 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                                    <span>Part of Speech</span>
+                                    <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+                            </div>
+                            <div class="relative group">
+                                <button class="h-full px-5 py-3 rounded-xl bg-white shadow-sm flex items-center gap-2 text-slate-600 font-semibold text-sm hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-200">
+                                    <span>Level</span>
+                                    <span class="material-symbols-outlined text-lg">expand_more</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-3 pb-20">
+                        <div class="grid grid-cols-12 gap-4 px-6 py-3 rounded-lg text-slate-400 uppercase text-xs font-bold tracking-widest select-none glass-header">
+                            <div class="col-span-3 flex items-center gap-1 cursor-pointer hover:text-slate-600">
+                                Word <span class="material-symbols-outlined text-sm">unfold_more</span>
+                            </div>
+                            <div class="col-span-4">Translation / Meaning</div>
+                            <div class="col-span-2 text-center">Level</div>
+                            <div class="col-span-2">Category</div>
+                            <div class="col-span-1 text-right">Action</div>
+                        </div>
+                        @foreach(var word in Model)
+                        {
+
+                            <div class="glass-row grid grid-cols-12 gap-4 px-6 py-5 rounded-2xl items-center group relative" >
+                                <div class="col-span-3">
+                                    <div class="flex flex-col">
+                                        <span class="text-slate-900 text-lg font-bold font-display">@word.EngWord</span>
+                                        <div class="flex items-center gap-2 mt-1">
+                                            <span class="text-slate-400 text-xs italic font-serif">noun</span>
+                                            <button class="text-slate-400 hover:text-accent transition-colors"><span class="material-symbols-outlined text-[16px]">volume_up</span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-span-4">
+                                    <p class="text-slate-600 font-medium leading-snug">
+                                        @await Component.InvokeAsync("WordMeanList", new { wordId = word.Id })
+                                    </p>
+                                </div>
+                                <div class="col-span-2 flex justify-center"><span class="level-badge level-@word.Level.ToString()">@word.Level.ToString()</span></div>
+                                <div class="col-span-2"><span class="text-slate-500 text-sm font-medium px-2 py-1 rounded bg-slate-100">@word.Category</span></div>
+                                <div class="col-span-1 flex justify-end">
+                                    <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:bg-slate-100 hover:text-accent transition-all"><span class="material-symbols-outlined">bookmark_border</span></button>
+                                </div>
+                            </div>
+                        }
+                        <div class="glass-row grid grid-cols-12 gap-4 px-6 py-5 rounded-2xl items-center group relative overflow-hidden">
+                            <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-transparent via-slate-300 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                            <div class="col-span-3">
+                                <div class="flex flex-col">
+                                    <span class="text-slate-900 text-lg font-bold font-display">abundant</span>
+                                    <div class="flex items-center gap-2 mt-1">
+                                        <span class="text-slate-400 text-xs italic font-serif">adj.</span>
+                                        <button class="text-slate-400 hover:text-accent transition-colors"><span class="material-symbols-outlined text-[16px]">volume_up</span></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-span-4"><p class="text-slate-600 font-medium leading-snug">Existing or available in large quantities; plentiful.</p></div>
+                            <div class="col-span-2 flex justify-center"><span class="level-badge level-c1">C1</span></div>
+                            <div class="col-span-2"><span class="text-slate-500 text-sm font-medium px-2 py-1 rounded bg-slate-100">Quantity</span></div>
+                            <div class="col-span-1 flex justify-end">
+                                <button class="w-8 h-8 rounded-full flex items-center justify-center text-slate-300 hover:bg-slate-100 hover:text-accent transition-all"><span class="material-symbols-outlined">bookmark_border</span></button>
+                            </div>
+                        </div>
+
+                        
+
+                        <div class="flex justify-center pb-20 mt-4">
+                            <button class="text-slate-500 text-sm font-semibold hover:text-slate-900 transition-colors flex items-center gap-2 px-6 py-3 rounded-xl hover:bg-white hover:shadow-sm">
+                                Load more words
+                                <span class="material-symbols-outlined">expand_more</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
