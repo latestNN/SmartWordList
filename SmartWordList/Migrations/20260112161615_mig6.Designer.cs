@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartWordList.Models.Context;
 
@@ -11,9 +12,11 @@ using SmartWordList.Models.Context;
 namespace SmartWordList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260112161615_mig6")]
+    partial class mig6
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -228,7 +231,10 @@ namespace SmartWordList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("CreatedTime")
@@ -258,7 +264,7 @@ namespace SmartWordList.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.HasIndex("WordListId");
 
@@ -287,47 +293,6 @@ namespace SmartWordList.Migrations
                     b.ToTable("trMeans");
                 });
 
-            modelBuilder.Entity("SmartWordList.Models.Entities.UserWord", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AskCount")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAsked")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTime?>("LastAskedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("SuccesPercent")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("SuccessAnswerCount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int?>("WeekPartialWordListId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("WordId")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("WrongAnswerCount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("WeekPartialWordListId");
-
-                    b.HasIndex("WordId");
-
-                    b.ToTable("userWords");
-                });
-
             modelBuilder.Entity("SmartWordList.Models.Entities.WeekPartialWordList", b =>
                 {
                     b.Property<int>("Id")
@@ -336,7 +301,10 @@ namespace SmartWordList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Name")
@@ -348,7 +316,7 @@ namespace SmartWordList.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("WeekPartialWordLists");
                 });
@@ -366,6 +334,11 @@ namespace SmartWordList.Migrations
 
                     b.Property<bool>("Connective")
                         .HasColumnType("bit");
+
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("EngWord")
                         .IsRequired()
@@ -387,6 +360,10 @@ namespace SmartWordList.Migrations
                     b.HasIndex("WordListId");
 
                     b.ToTable("words");
+
+                    b.HasDiscriminator().HasValue("Word");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("SmartWordList.Models.Entities.WordList", b =>
@@ -397,7 +374,10 @@ namespace SmartWordList.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("AppUserId")
+                    b.Property<int?>("AppUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("AppUserId1")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Category")
@@ -415,9 +395,39 @@ namespace SmartWordList.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AppUserId");
+                    b.HasIndex("AppUserId1");
 
                     b.ToTable("wordLists");
+                });
+
+            modelBuilder.Entity("SmartWordList.Models.Entities.UserWord", b =>
+                {
+                    b.HasBaseType("SmartWordList.Models.Entities.Word");
+
+                    b.Property<int>("AskCount")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsAsked")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastAskedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("SuccesPercent")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SuccessAnswerCount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("WeekPartialWordListId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("WrongAnswerCount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasIndex("WeekPartialWordListId");
+
+                    b.HasDiscriminator().HasValue("UserWord");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -475,7 +485,7 @@ namespace SmartWordList.Migrations
                 {
                     b.HasOne("SmartWordList.Models.Authentication.AppUser", "AppUser")
                         .WithMany("PartialWordLists")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
 
                     b.HasOne("SmartWordList.Models.Entities.WordList", "WordList")
                         .WithMany("PartialWordLists")
@@ -495,28 +505,11 @@ namespace SmartWordList.Migrations
                     b.Navigation("Word");
                 });
 
-            modelBuilder.Entity("SmartWordList.Models.Entities.UserWord", b =>
-                {
-                    b.HasOne("SmartWordList.Models.Entities.WeekPartialWordList", "WeekPartialWordList")
-                        .WithMany("UserWords")
-                        .HasForeignKey("WeekPartialWordListId");
-
-                    b.HasOne("SmartWordList.Models.Entities.Word", "Word")
-                        .WithMany()
-                        .HasForeignKey("WordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("WeekPartialWordList");
-
-                    b.Navigation("Word");
-                });
-
             modelBuilder.Entity("SmartWordList.Models.Entities.WeekPartialWordList", b =>
                 {
                     b.HasOne("SmartWordList.Models.Authentication.AppUser", "AppUser")
                         .WithMany()
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
 
                     b.Navigation("AppUser");
                 });
@@ -540,9 +533,18 @@ namespace SmartWordList.Migrations
                 {
                     b.HasOne("SmartWordList.Models.Authentication.AppUser", "AppUser")
                         .WithMany("WordLists")
-                        .HasForeignKey("AppUserId");
+                        .HasForeignKey("AppUserId1");
 
                     b.Navigation("AppUser");
+                });
+
+            modelBuilder.Entity("SmartWordList.Models.Entities.UserWord", b =>
+                {
+                    b.HasOne("SmartWordList.Models.Entities.WeekPartialWordList", "WeekPartialWordList")
+                        .WithMany("UserWords")
+                        .HasForeignKey("WeekPartialWordListId");
+
+                    b.Navigation("WeekPartialWordList");
                 });
 
             modelBuilder.Entity("SmartWordList.Models.Authentication.AppUser", b =>

@@ -161,9 +161,20 @@
         </div>
 
         <div class="mt-10 flex flex-col md:flex-row gap-4 w-full max-w-lg">
-            <a href="/WordList/WordListTest/2" class="flex-1 h-14 rounded-lg bg-oxford-blue hover:bg-[#002b5c] text-white text-base font-bold uppercase tracking-wider shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
+            <a href="/WordList/SaveWordToPartial/@ViewBag.word.Id" class="flex-1 h-14 rounded-lg bg-oxford-blue hover:bg-[#002b5c] text-white text-base font-bold uppercase tracking-wider shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
                 <span class="material-symbols-outlined">bookmark_border</span>
                 Save Word
+            </a>
+            <a asp-controller="WordList" asp-action="WordListTest" asp-route-id="@ViewBag.word.WordListId" class="flex-1 h-14 rounded-lg bg-primary hover:bg-[#2fd465] text-[#050B14] text-base font-bold uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
+                Next Word
+                <span class="material-symbols-outlined">arrow_forward</span>
+            </a>
+        </div>
+
+        <div class="mt-10 flex flex-col md:flex-row gap-4 w-full max-w-lg">
+            <a href="/WordList/SaveWordToPartial/@ViewBag.word.Id" class="flex-1 h-14 rounded-lg bg-oxford-blue hover:bg-[#002b5c] text-white text-base font-bold uppercase tracking-wider shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
+                <span class="material-symbols-outlined">bookmark_border</span>
+                Finish Test
             </a>
             <a asp-controller="WordList" asp-action="WordListTest" asp-route-id="@ViewBag.word.WordListId" class="flex-1 h-14 rounded-lg bg-primary hover:bg-[#2fd465] text-[#050B14] text-base font-bold uppercase tracking-wider shadow-lg shadow-primary/20 hover:shadow-primary/40 hover:-translate-y-0.5 transition-all duration-200 flex items-center justify-center gap-2 no-underline">
                 Next Word

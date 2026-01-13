@@ -27,5 +27,9 @@
         public int? WordListId { get; set; }
 
         public WordList? WordList { get; set; }
+
+        public int? PartialWordListId { get; set; }
+
+        public PartialWordList? PartialWordList { get; set; }
     }
 }

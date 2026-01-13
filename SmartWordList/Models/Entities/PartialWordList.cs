@@ -10,7 +10,7 @@ namespace SmartWordList.Models.Entities
         B2 = 4,
         C1 = 5
     }
-    public class PartialWordList
+    public class PartialWordList // Büyük word listlerinin kullanıcılara göre özelleştirilmiş hali.
     {
         public int Id { get; set; }
 
@@ -32,9 +32,9 @@ namespace SmartWordList.Models.Entities
 
         public WordList? WordList { get; set; }
 
-        public List<UserWord> UserWords { get; set; }
+        public List<Word> Words { get; set; }
 
-        public int? AppUserId { get; set; }
+        public string? AppUserId { get; set; }
 
         public AppUser? AppUser { get; set; }
     }

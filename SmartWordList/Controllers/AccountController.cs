@@ -72,7 +72,7 @@ namespace SmartWordList.Controllers
                     var result = await _signInManager.PasswordSignInAsync(user, userModel.Sifre, false, false);
                     if(result.Succeeded)
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("Index", "WordList");
                     }
                 }
                 

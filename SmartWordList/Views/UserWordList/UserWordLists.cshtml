@@ -1,0 +1,398 @@
+﻿@model List<SmartWordList.Models.Entities.PartialWordList>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html class="light" lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VocabMaster - Filtered Weekly Panels</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#0f172a","accent": "#3b82f6",
+                        "background-light": "#F8FAFC","background-dark": "#101622",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px"},
+                    boxShadow: {
+                        'liquid-glow': 'inset 0 0 40px 0 rgba(255,255,255,0.1), 0 20px 40px -10px rgba(0,0,0,0.2)',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @@layer utilities {
+            .text-shadow-md
+
+        {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        details > summary {
+            list-style: none;
+        }
+
+            details > summary::-webkit-details-marker {
+                display: none;
+            }
+
+        /* Custom Scrollbar for Dropdown */
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5);
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+            .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+                background: #2563eb;
+            }
+
+        }
+    </style>
+</head>
+<body class="bg-[#F8FAFC] text-slate-900 font-display min-h-screen relative overflow-x-hidden selection:bg-slate-200 selection:text-slate-900 transition-colors duration-500">
+    <div class="relative z-10 flex h-auto min-h-screen w-full flex-col">
+
+        <header class="flex items-center justify-between whitespace-nowrap border-b border-slate-200 bg-white px-6 py-3 sticky top-0 z-50 shadow-sm">
+            <div class="flex items-center gap-3 text-slate-900 group cursor-pointer">
+                <div class="size-8 rounded-lg bg-slate-900 text-white flex items-center justify-center transition-transform group-hover:scale-105 duration-300 shadow-md">
+                    <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">school</span>
+                </div>
+                <h2 class="text-slate-900 text-lg font-bold leading-tight tracking-tight">VocabMaster</h2>
+            </div>
+            <div class="flex flex-1 justify-end gap-6">
+                <div class="flex items-center gap-6 hidden md:flex">
+                    <a class="text-slate-500 text-xs font-semibold leading-normal hover:text-slate-900 transition-colors" href="#">Dashboard</a>
+                    <a class="text-slate-500 text-xs font-semibold leading-normal hover:text-slate-900 transition-colors" href="#">My Lists</a>
+                </div>
+                <div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-8 ring-2 ring-slate-100 shadow-sm cursor-pointer hover:ring-slate-300 transition-all" data-alt="User profile avatar image" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCZMg4fIIyCTpULZg5JnOxzlP0GqCozh_Jbe8Hm6DwNh5__QcrZXkuysOZ41xaToCSp_knVvr3tpExOOhukcmackXT-bV6nf65ruvqMpIE_fSL0qEH2cQv_0zRPPSrMaYnMbJrn1i8zxpppAxq1PYFgx6D_euhiIL6PXWvpH8nj0ye1VnNqp0Yvgc4n9ey5c6Nt_XOxLXB5xBUAFdERhx55YrXZyfi68bYgjkKh8-MGqBwOI_6v5KUahvIMcbyr-wmP4PDPiOvq6A8");'></div>
+            </div>
+        </header>
+
+        <div class="layout-container flex h-full grow flex-col">
+            <div class="px-4 md:px-8 lg:px-16 xl:px-32 flex flex-1 justify-center py-6">
+                <div class="layout-content-container flex flex-col max-w-[1280px] flex-1">
+
+                    <div class="bg-slate-900 rounded-[1.5rem] p-6 md:p-8 mb-6 relative overflow-hidden shadow-2xl isolate">
+                        <div class="absolute inset-0 bg-gradient-to-r from-slate-900 via-slate-900/90 to-blue-900/40"></div>
+                        <div class="absolute -right-20 -top-20 opacity-20 rotate-12">
+                            <img alt="Oxford University logo watermark" class="w-72 h-72 object-contain grayscale invert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZkYBfCpA2sgkZSYEdgWycummVAGEOcaYYhwR9v4aTkFozPvke8GdDbWIRtE4tnpPCmsz7tc_xuCdfsmNnJAd_82i5JWZcrcgKNyRVRKSPlybrorxNMJgsNIjw-eeSUHUdt9F2FuKKH08nYree1Ouc0ZGkNuS1CHcroec4PHI4FxBEi0NhTQYXdPTEItgodYud6_MUf6cg9ie4bQcTxRFYYRVVqfw9RhkfdqtnTQWuDbkCEdt-KYZyP3X6iw_gshvqKfQcoqYz9E" />
+                        </div>
+                        <div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+                            <div class="flex flex-col gap-3 max-w-2xl">
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold tracking-widest uppercase bg-blue-500/20 text-blue-200 border border-blue-400/20">
+                                        Current Course
+                                    </span>
+                                    <span class="text-slate-400 text-xs font-medium flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                                        Oxford 3000™
+                                    </span>
+                                </div>
+                                <h1 class="text-white text-3xl md:text-4xl font-black leading-tight tracking-tight">
+                                    Master All Words
+                                </h1>
+                                <p class="text-slate-300 text-sm font-medium leading-relaxed max-w-xl">
+                                    Break down the 3000 essential words into manageable weekly goals. Track your progress week by week.
+                                </p>
+                            </div>
+                            <div class="flex flex-col items-end gap-1">
+                                <div class="text-right">
+                                    <span class="text-slate-400 text-xs font-bold uppercase tracking-wider block mb-0.5">Overall Progress</span>
+                                    <span class="text-white text-2xl font-black">12%</span>
+                                </div>
+                                <div class="w-40 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                                    <div class="h-full bg-blue-500 w-[12%] rounded-full shadow-[0_0_10px_rgba(59,130,246,0.5)]"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-4 mb-6">
+                        <div>
+                            <h3 class="text-slate-900 text-xl font-bold tracking-tight">Institution Lists</h3>
+                            <p class="text-slate-500 text-xs font-medium mt-0.5">Explore vocabulary lists by university or organization.</p>
+                        </div>
+                    </div>
+                    @foreach(var partialList in Model)
+                    {
+                        <details class="group/accordion mb-4" open="">
+                            <summary class="list-none cursor-pointer">
+                                <div class="bg-slate-900 rounded-xl p-4 flex items-center justify-between border border-slate-800 shadow-xl relative overflow-hidden transition-all duration-300 group-hover/accordion:border-blue-500/30 group-hover/accordion:shadow-blue-900/10">
+                                    <div class="absolute inset-0 bg-gradient-to-r from-slate-900 to-slate-800 z-0"></div>
+                                    <div class="absolute right-0 top-0 h-full w-1/3 bg-gradient-to-l from-blue-900/10 to-transparent z-0"></div>
+                                    <div class="relative z-10 flex items-center gap-4">
+                                        <div class="w-12 h-12 rounded-lg bg-white/5 backdrop-blur-sm border border-white/10 flex items-center justify-center shadow-inner">
+                                            <img alt="Oxford Logo" class="w-8 h-8 object-contain invert grayscale brightness-200" src="@partialList.WordList.LogoUrl" />
+                                        </div>
+                                        <div>
+                                            <h3 class="text-white text-lg font-bold tracking-tight">Oxford 3000™</h3>
+                                            <p class="text-slate-400 text-xs font-medium mt-0.5">3000 most important words to learn in English</p>
+                                        </div>
+                                    </div>
+                                    <div class="relative z-10 flex items-center gap-4">
+                                        <div class="hidden md:flex flex-col items-end mr-2">
+                                            <span class="text-[10px] text-slate-400 font-bold uppercase tracking-wider mb-0.5">Progress</span>
+                                            <div class="flex items-center gap-2">
+                                                <div class="w-24 h-1 bg-slate-800 rounded-full overflow-hidden">
+                                                    <div class="h-full bg-blue-500 w-[12%]"></div>
+                                                </div>
+                                                <span class="text-white text-xs font-bold">12%</span>
+                                            </div>
+                                        </div>
+                                        <div class="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center text-slate-300 group-open/accordion:bg-blue-600 group-open/accordion:text-white transition-all duration-300 group-open/accordion:rotate-180 border border-slate-700 group-open/accordion:border-blue-500 shadow-lg">
+                                            <span class="material-symbols-outlined text-lg">expand_more</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </summary>
+
+                            <div class="bg-slate-800/30 backdrop-blur-xl border-x border-b border-slate-200/5 rounded-b-2xl p-4 md:p-6 -mt-2 pt-8 relative overflow-hidden shadow-inner">
+                                <div class="absolute -right-20 top-20 opacity-[0.03] rotate-[15deg] pointer-events-none">
+                                    <img alt="Oxford logo watermark" class="w-[400px] h-[400px] object-contain invert" src="@partialList.WordList.LogoUrl" />
+                                </div>
+
+                                <div class="relative z-20 mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
+                                    <div class="flex flex-wrap items-center gap-2 w-full md:w-auto">
+
+                                        <div class="relative group min-w-[140px] custom-select-container">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-xs pointer-events-none z-10">filter_alt</span>
+                                            <button class="custom-select-trigger w-full pl-8 pr-8 py-2 bg-slate-900/80 border border-slate-700/50 rounded-lg text-slate-200 text-xs font-semibold focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 backdrop-blur-md transition-all hover:bg-slate-800/80 flex items-center justify-between text-left">
+                                                <span class="truncate selected-text">All Status</span>
+                                                <span class="material-symbols-outlined text-slate-500 text-sm absolute right-2 pointer-events-none transition-transform duration-300 arrow-icon">expand_more</span>
+                                            </button>
+                                            <div class="custom-select-options absolute top-full left-0 mt-1 w-full bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-lg shadow-xl overflow-hidden hidden z-50">
+                                                <div class="max-h-48 overflow-y-auto custom-scrollbar p-1">
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="">All Status</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="completed">Completed</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="in-progress">In Progress</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="up-next">Up Next</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="relative group min-w-[140px] custom-select-container">
+                                            <span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-xs pointer-events-none z-10">signal_cellular_alt</span>
+                                            <button class="custom-select-trigger w-full pl-8 pr-8 py-2 bg-slate-900/80 border border-slate-700/50 rounded-lg text-slate-200 text-xs font-semibold focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 backdrop-blur-md transition-all hover:bg-slate-800/80 flex items-center justify-between text-left">
+                                                <span class="truncate selected-text">Difficulty (All)</span>
+                                                <span class="material-symbols-outlined text-slate-500 text-sm absolute right-2 pointer-events-none transition-transform duration-300 arrow-icon">expand_more</span>
+                                            </button>
+                                            <div class="custom-select-options absolute top-full left-0 mt-1 w-full bg-slate-900/95 backdrop-blur-xl border border-slate-700/50 rounded-lg shadow-xl overflow-hidden hidden z-50">
+                                                <div class="max-h-48 overflow-y-auto custom-scrollbar p-1">
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="">Difficulty (All)</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="a1">A1 - Beginner</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="a2">A2 - Elementary</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="b1">B1 - Intermediate</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="b2">B2 - Upper Int.</div>
+                                                    <div class="option px-3 py-2 text-xs text-slate-300 hover:bg-blue-600 hover:text-white rounded cursor-pointer transition-colors" data-value="c1">C1 - Advanced</div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="relative w-full md:max-w-xs">
+                                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                            <span class="material-symbols-outlined text-slate-500 text-sm">search</span>
+                                        </div>
+                                        <input class="block w-full pl-9 pr-4 py-2 bg-slate-900/80 border border-slate-700/50 rounded-lg text-slate-200 text-xs font-medium placeholder-slate-500 focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 backdrop-blur-md transition-all" placeholder="Search weeks..." type="text" />
+                                    </div>
+                                </div>
+
+                                <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+
+                                    <div class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-liquid-glow hover:shadow-2xl hover:shadow-slate-900/40 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-90"></div>
+                                        <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                                            <img alt="Oxford logo bg" class="w-full h-full object-cover opacity-[0.6] grayscale scale-[1.8] rotate-[15deg] group-hover:-translate-y-4 transition-transform duration-700" src="@partialList.WordList.LogoUrl" />
+                                        </div>
+                                        <div class="relative z-10 flex flex-col h-full">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-wider uppercase bg-white/10 backdrop-blur-md text-white border border-white/20">
+                                                    A1-A2 Level
+                                                </span>
+                                                <div class="bg-green-500 text-white p-0.5 rounded-full shadow-lg shadow-green-900/20">
+                                                    <span class="material-symbols-outlined text-xs font-bold">check</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-auto">
+                                                <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-0.5 block">Completed</span>
+                                                <h3 class="text-white text-xl font-black leading-tight mb-1 tracking-tight text-shadow-md">@partialList.Name</h3>
+                                                <p class="text-slate-300 text-xs font-medium mb-3 line-clamp-2">
+                                                    Foundational verbs and common nouns. The basics.
+                                                </p>
+                                                <div class="w-full bg-slate-800/50 rounded-full h-1 backdrop-blur-sm overflow-hidden">
+                                                    <div class="bg-green-500 h-full w-full shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+                                                </div>
+                                                <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
+                                                    <span>50/50 Words</span>
+                                                    <span>100%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border-2 border-blue-500/50 shadow-liquid-glow hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate ring-4 ring-blue-500/10">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-80"></div>
+                                        <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                                            <img alt="Oxford logo bg" class="w-full h-full object-cover opacity-[0.7] grayscale scale-[1.8] rotate-[15deg] group-hover:-translate-y-4 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZkYBfCpA2sgkZSYEdgWycummVAGEOcaYYhwR9v4aTkFozPvke8GdDbWIRtE4tnpPCmsz7tc_xuCdfsmNnJAd_82i5JWZcrcgKNyRVRKSPlybrorxNMJgsNIjw-eeSUHUdt9F2FuKKH08nYree1Ouc0ZGkNuS1CHcroec4PHI4FxBEi0NhTQYXdPTEItgodYud6_MUf6cg9ie4bQcTxRFYYRVVqfw9RhkfdqtnTQWuDbkCEdt-KYZyP3X6iw_gshvqKfQcoqYz9E" />
+                                        </div>
+                                        <div class="relative z-10 flex flex-col h-full">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-wider uppercase bg-white/10 backdrop-blur-md text-white border border-white/20">
+                                                    B1 Level
+                                                </span>
+                                                <div class="bg-blue-500 text-white px-1.5 py-0.5 rounded-full shadow-lg shadow-blue-900/20 flex items-center gap-1">
+                                                    <span class="w-1 h-1 rounded-full bg-white animate-pulse"></span>
+                                                    <span class="text-[9px] font-bold uppercase">Current</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-auto">
+                                                <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-0.5 block">In Progress</span>
+                                                <h3 class="text-white text-xl font-black leading-tight mb-1 tracking-tight text-shadow-md">Week 2</h3>
+                                                <p class="text-slate-300 text-xs font-medium mb-3 line-clamp-2">
+                                                    Adjectives for description and emotion.
+                                                </p>
+                                                <div class="w-full bg-slate-800/50 rounded-full h-1 backdrop-blur-sm overflow-hidden">
+                                                    <div class="bg-blue-500 h-full w-[45%] shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
+                                                </div>
+                                                <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
+                                                    <span>22/50 Words</span>
+                                                    <span>45%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-liquid-glow hover:shadow-2xl hover:shadow-slate-900/40 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate">
+                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-90"></div>
+                                        <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                                            <img alt="Oxford logo bg" class="w-full h-full object-cover opacity-[0.6] grayscale scale-[1.8] rotate-[15deg] group-hover:-translate-y-4 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZkYBfCpA2sgkZSYEdgWycummVAGEOcaYYhwR9v4aTkFozPvke8GdDbWIRtE4tnpPCmsz7tc_xuCdfsmNnJAd_82i5JWZcrcgKNyRVRKSPlybrorxNMJgsNIjw-eeSUHUdt9F2FuKKH08nYree1Ouc0ZGkNuS1CHcroec4PHI4FxBEi0NhTQYXdPTEItgodYud6_MUf6cg9ie4bQcTxRFYYRVVqfw9RhkfdqtnTQWuDbkCEdt-KYZyP3X6iw_gshvqKfQcoqYz9E" />
+                                        </div>
+                                        <div class="relative z-10 flex flex-col h-full">
+                                            <div class="flex justify-between items-start mb-2">
+                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-wider uppercase bg-white/10 backdrop-blur-md text-white border border-white/20">
+                                                    B2 Level
+                                                </span>
+                                                <div class="bg-slate-700/50 backdrop-blur-md text-slate-300 p-1 rounded-full border border-white/10 hover:bg-slate-600/50 transition-colors">
+                                                    <span class="material-symbols-outlined text-xs">play_arrow</span>
+                                                </div>
+                                            </div>
+                                            <div class="mt-auto">
+                                                <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-0.5 block">Up Next</span>
+                                                <h3 class="text-white text-xl font-black leading-tight mb-1 tracking-tight text-shadow-md">Week 3</h3>
+                                                <p class="text-slate-300 text-xs font-medium mb-3 line-clamp-2">
+                                                    Prepositions and conjunctions for sentence building.
+                                                </p>
+                                                <div class="w-full bg-slate-800/50 rounded-full h-1 backdrop-blur-sm overflow-hidden">
+                                                    <div class="bg-blue-500 h-full w-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
+                                                </div>
+                                                <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
+                                                    <span>0/50 Words</span>
+                                                    <span>0%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
+                    }
+                    
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const selects = document.querySelectorAll('.custom-select-container');
+
+            selects.forEach(select => {
+                const trigger = select.querySelector('.custom-select-trigger');
+                const optionsContainer = select.querySelector('.custom-select-options');
+                const options = select.querySelectorAll('.option');
+                const selectedText = select.querySelector('.selected-text');
+                const arrowIcon = select.querySelector('.arrow-icon');
+
+                // Toggle dropdown
+                trigger.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    // Close others
+                    document.querySelectorAll('.custom-select-options').forEach(el => {
+                        if (el !== optionsContainer) el.classList.add('hidden');
+                    });
+                    document.querySelectorAll('.arrow-icon').forEach(el => {
+                        if (el !== arrowIcon) el.style.transform = 'rotate(0deg)';
+                    });
+
+                    // Toggle current
+                    const isHidden = optionsContainer.classList.contains('hidden');
+                    if (isHidden) {
+                        optionsContainer.classList.remove('hidden');
+                        arrowIcon.style.transform = 'rotate(180deg)';
+                    } else {
+                        optionsContainer.classList.add('hidden');
+                        arrowIcon.style.transform = 'rotate(0deg)';
+                    }
+                });
+
+                // Select option
+                options.forEach(option => {
+                    option.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const value = option.getAttribute('data-value');
+                        const text = option.textContent;
+
+                        selectedText.textContent = text;
+                        optionsContainer.classList.add('hidden');
+                        arrowIcon.style.transform = 'rotate(0deg)';
+
+                        // Visual feedback for selection
+                        options.forEach(opt => {
+                            opt.classList.remove('bg-blue-600', 'text-white');
+                            opt.classList.add('text-slate-300');
+                        });
+                        option.classList.remove('text-slate-300');
+                        option.classList.add('bg-blue-600', 'text-white');
+
+                        console.log('Selected Value:', value); // For logic integration
+                    });
+                });
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', () => {
+                document.querySelectorAll('.custom-select-options').forEach(el => el.classList.add('hidden'));
+                document.querySelectorAll('.arrow-icon').forEach(el => el.style.transform = 'rotate(0deg)');
+            });
+        });
+    </script>
+
+</body>
+</html>
