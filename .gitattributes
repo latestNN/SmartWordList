@@ -1,7 +1,16 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
+
 * text=auto
+*.html linguist-vendored
+*.cshtml linguist-vendored
+
+# Razor dosyalarını da çıkarabilirsin istersen
+*.razor linguist-vendored
+
+# Projenin ana dili olarak C#'ı zorla
+*.cs linguist-language=C#
 
 ###############################################################################
 # Set default behavior for command prompt diff.
