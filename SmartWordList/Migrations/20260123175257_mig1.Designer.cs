@@ -12,8 +12,8 @@ using SmartWordList.Models.Context;
 namespace SmartWordList.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260112215723_mig_fixed_word_userword_relation")]
-    partial class mig_fixed_word_userword_relation
+    [Migration("20260123175257_mig1")]
+    partial class mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

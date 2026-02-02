@@ -156,6 +156,157 @@ namespace SmartWordList.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "WeekPartialWordLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WeekNumber = table.Column<int>(type: "int", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WeekPartialWordLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WeekPartialWordLists_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "wordLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Organisation = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LogoUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_wordLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_wordLists_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "partialWordLists",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ListLevel = table.Column<int>(type: "int", nullable: true),
+                    CreatedTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Weak = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SuccessAnswerCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    WrongAnswerCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SuccesPercent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    WordListId = table.Column<int>(type: "int", nullable: true),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_partialWordLists", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_partialWordLists_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_partialWordLists_wordLists_WordListId",
+                        column: x => x.WordListId,
+                        principalTable: "wordLists",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "words",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    EngWord = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Level = table.Column<int>(type: "int", nullable: true),
+                    Category = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Connective = table.Column<bool>(type: "bit", nullable: false),
+                    WordListId = table.Column<int>(type: "int", nullable: true),
+                    PartialWordListId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_words", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_words_partialWordLists_PartialWordListId",
+                        column: x => x.PartialWordListId,
+                        principalTable: "partialWordLists",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_words_wordLists_WordListId",
+                        column: x => x.WordListId,
+                        principalTable: "wordLists",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "trMeans",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Mean = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    WordId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_trMeans", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_trMeans_words_WordId",
+                        column: x => x.WordId,
+                        principalTable: "words",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "userWords",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SuccessAnswerCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    WrongAnswerCount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    SuccesPercent = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    AskCount = table.Column<int>(type: "int", nullable: false),
+                    IsAsked = table.Column<bool>(type: "bit", nullable: false),
+                    LastAskedDate = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    WeekPartialWordListId = table.Column<int>(type: "int", nullable: true),
+                    WordId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_userWords", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_userWords_WeekPartialWordLists_WeekPartialWordListId",
+                        column: x => x.WeekPartialWordListId,
+                        principalTable: "WeekPartialWordLists",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_userWords_words_WordId",
+                        column: x => x.WordId,
+                        principalTable: "words",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -194,6 +345,51 @@ namespace SmartWordList.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_partialWordLists_AppUserId",
+                table: "partialWordLists",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_partialWordLists_WordListId",
+                table: "partialWordLists",
+                column: "WordListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_trMeans_WordId",
+                table: "trMeans",
+                column: "WordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userWords_WeekPartialWordListId",
+                table: "userWords",
+                column: "WeekPartialWordListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_userWords_WordId",
+                table: "userWords",
+                column: "WordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_WeekPartialWordLists_AppUserId",
+                table: "WeekPartialWordLists",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_wordLists_AppUserId",
+                table: "wordLists",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_words_PartialWordListId",
+                table: "words",
+                column: "PartialWordListId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_words_WordListId",
+                table: "words",
+                column: "WordListId");
         }
 
         /// <inheritdoc />
@@ -215,7 +411,25 @@ namespace SmartWordList.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "trMeans");
+
+            migrationBuilder.DropTable(
+                name: "userWords");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "WeekPartialWordLists");
+
+            migrationBuilder.DropTable(
+                name: "words");
+
+            migrationBuilder.DropTable(
+                name: "partialWordLists");
+
+            migrationBuilder.DropTable(
+                name: "wordLists");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

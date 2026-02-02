@@ -10,10 +10,19 @@ namespace SmartWordList.Models.Entities
 
         public int WeekNumber { get; set; }
 
-        public List<UserWord>? UserWords { get; set; }
+        public int? PartialWordListId { get; set; }
+
+        public PartialWordList? PartialWordList { get; set; }
+
+        public List<UserWord> UserWords { get; set; }
 
         public string? AppUserId { get; set; }
 
         public AppUser? AppUser { get; set; }
+
+        public WeekPartialWordList()
+        {
+            UserWords = new List<UserWord>();
+        }
     }
 }

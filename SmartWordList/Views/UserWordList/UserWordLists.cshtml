@@ -255,6 +255,39 @@
                                         </div>
                                     </div>
 
+                                    @foreach(var weakList in partialList.WeekPartialWordLists)
+                                    {
+                                        <div onclick="goToWeekDetail('@weakList.Id')" class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-liquid-glow hover:shadow-2xl hover:shadow-slate-900/40 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate">
+                                            <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-90"></div>
+                                            <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+                                                <img alt="Oxford logo bg" class="w-full h-full object-cover opacity-[0.6] grayscale scale-[1.8] rotate-[15deg] group-hover:-translate-y-4 transition-transform duration-700" src="@partialList.WordList.LogoUrl" />
+                                            </div>
+                                            <div class="relative z-10 flex flex-col h-full">
+                                                <div class="flex justify-between items-start mb-2">
+                                                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-wider uppercase bg-white/10 backdrop-blur-md text-white border border-white/20">
+                                                        B2 Level
+                                                    </span>
+                                                    <div class="bg-slate-700/50 backdrop-blur-md text-slate-300 p-1 rounded-full border border-white/10 hover:bg-slate-600/50 transition-colors">
+                                                        <span class="material-symbols-outlined text-xs">play_arrow</span>
+                                                    </div>
+                                                </div>
+                                                <div class="mt-auto">
+                                                    <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-0.5 block">Up Next</span>
+                                                    <h3 class="text-white text-xl font-black leading-tight mb-1 tracking-tight text-shadow-md">@weakList.Name</h3>
+                                                    <p class="text-slate-300 text-xs font-medium mb-3 line-clamp-2">
+                                                        @weakList.Name Hafta Listesi
+                                                    </p>
+                                                    <div class="w-full bg-slate-800/50 rounded-full h-1 backdrop-blur-sm overflow-hidden">
+                                                        <div class="bg-blue-500 h-full w-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
+                                                    </div>
+                                                    <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
+                                                        <span>0/@weakList.UserWords.Count().ToString() Words</span>
+                                                        <span>0%</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
                                     <div class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border-2 border-blue-500/50 shadow-liquid-glow hover:shadow-2xl hover:shadow-blue-900/20 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate ring-4 ring-blue-500/10">
                                         <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-80"></div>
                                         <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
@@ -287,36 +320,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="group relative flex flex-col p-5 rounded-2xl bg-slate-900 border border-slate-800 shadow-liquid-glow hover:shadow-2xl hover:shadow-slate-900/40 transition-all duration-500 hover:-translate-y-1 cursor-pointer overflow-hidden h-64 isolate">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/60 to-transparent opacity-90"></div>
-                                        <div class="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
-                                            <img alt="Oxford logo bg" class="w-full h-full object-cover opacity-[0.6] grayscale scale-[1.8] rotate-[15deg] group-hover:-translate-y-4 transition-transform duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZkYBfCpA2sgkZSYEdgWycummVAGEOcaYYhwR9v4aTkFozPvke8GdDbWIRtE4tnpPCmsz7tc_xuCdfsmNnJAd_82i5JWZcrcgKNyRVRKSPlybrorxNMJgsNIjw-eeSUHUdt9F2FuKKH08nYree1Ouc0ZGkNuS1CHcroec4PHI4FxBEi0NhTQYXdPTEItgodYud6_MUf6cg9ie4bQcTxRFYYRVVqfw9RhkfdqtnTQWuDbkCEdt-KYZyP3X6iw_gshvqKfQcoqYz9E" />
-                                        </div>
-                                        <div class="relative z-10 flex flex-col h-full">
-                                            <div class="flex justify-between items-start mb-2">
-                                                <span class="inline-flex items-center px-1.5 py-0.5 rounded-md text-[9px] font-black tracking-wider uppercase bg-white/10 backdrop-blur-md text-white border border-white/20">
-                                                    B2 Level
-                                                </span>
-                                                <div class="bg-slate-700/50 backdrop-blur-md text-slate-300 p-1 rounded-full border border-white/10 hover:bg-slate-600/50 transition-colors">
-                                                    <span class="material-symbols-outlined text-xs">play_arrow</span>
-                                                </div>
-                                            </div>
-                                            <div class="mt-auto">
-                                                <span class="text-blue-400 text-[10px] font-bold uppercase tracking-widest mb-0.5 block">Up Next</span>
-                                                <h3 class="text-white text-xl font-black leading-tight mb-1 tracking-tight text-shadow-md">Week 3</h3>
-                                                <p class="text-slate-300 text-xs font-medium mb-3 line-clamp-2">
-                                                    Prepositions and conjunctions for sentence building.
-                                                </p>
-                                                <div class="w-full bg-slate-800/50 rounded-full h-1 backdrop-blur-sm overflow-hidden">
-                                                    <div class="bg-blue-500 h-full w-0 shadow-[0_0_8px_rgba(59,130,246,0.6)]"></div>
-                                                </div>
-                                                <div class="flex justify-between mt-1.5 text-[10px] text-slate-400 font-medium">
-                                                    <span>0/50 Words</span>
-                                                    <span>0%</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                             </div>
                         </details>
@@ -392,6 +396,10 @@
                 document.querySelectorAll('.arrow-icon').forEach(el => el.style.transform = 'rotate(0deg)');
             });
         });
+
+        function goToWeekDetail(id) {
+            window.location.href = '/UserWordList/UserWeakWordList?id=' + id;
+        }
     </script>
 
 </body>

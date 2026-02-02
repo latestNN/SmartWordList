@@ -32,7 +32,8 @@ namespace SmartWordList.Models.Entities
 
         public WordList? WordList { get; set; }
 
-        public List<Word> Words { get; set; }
+        public List<UserWord> UserWords { get; set; }
+        public List<WeekPartialWordList> WeekPartialWordLists { get; set; }
 
         public string? AppUserId { get; set; }
 

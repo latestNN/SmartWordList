@@ -5,9 +5,10 @@ namespace SmartWordList.Models.Authentication
 {
     public class AppUser : IdentityUser
     {
-        public List<WordList> WordLists { get; set; }
 
         public List<PartialWordList> PartialWordLists { get; set; }
+
+        public List<WeekPartialWordList> WeekPartialWordLists { get; set; }
 
 
     }

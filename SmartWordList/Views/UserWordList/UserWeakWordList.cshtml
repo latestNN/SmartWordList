@@ -1,0 +1,511 @@
+﻿@model SmartWordList.Models.ViewModels.QuizSettingsViewModel
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>VocabMaster - Fixed Slider</title>
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect" />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-dark": "#0f172a",
+                        "text-main": "#0f172a",
+                        "text-muted": "#64748b",
+                        "bg-light": "#f1f5f9",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    boxShadow: {
+                        'premium': '0 20px 50px -12px rgba(15, 23, 42, 0.12)',
+                        'dark-glow': '0 12px 24px -8px rgba(15, 23, 42, 0.3)',
+                    },
+                    borderRadius: {
+                        '4xl': '2rem',
+                        '5xl': '3rem',
+                    },
+                    transitionProperty: {
+                        'height': 'height',
+                        'spacing': 'margin, padding',
+                    }
+                },
+            },
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @@layer utilities {
+            .soft-mesh {
+                background-color: #f1f5f9;
+                background-image: radial-gradient(at 0% 0%, rgba(241, 245, 249, 0.5) 0, transparent 50%), radial-gradient(at 100% 0%, rgba(241, 245, 249, 0.5) 0, transparent 50%);
+            }
+
+            .subtle-border {
+                @@apply border border-slate-100;
+            }
+            /* --- SLIDER CSS FIX --- */
+            input[type=range] {
+                -webkit-appearance: none;
+                width: 100%;
+                background: transparent; /* Default transparent, JS sets gradient */
+                height: 8px;
+                border-radius: 999px;
+                cursor: pointer;
+            }
+                /* Webkit (Chrome, Safari, Edge) */
+                input[type=range]::-webkit-slider-runnable-track {
+                    width: 100%;
+                    height: 8px;
+                    cursor: pointer;
+                    border-radius: 999px;
+                    border: 1px solid #e2e8f0;
+                    /* ÖNEMLİ: Track rengi transparent olmalı ki alttaki gradient gözüksün */
+                    background: transparent;
+                }
+
+                input[type=range]::-webkit-slider-thumb {
+                    -webkit-appearance: none;
+                    height: 24px;
+                    width: 24px;
+                    border-radius: 50%;
+                    background: #0f172a;
+                    cursor: pointer;
+                    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+                    margin-top: -9px; /* (8px track - 24px thumb) / 2 = -8px (border payı ile -9) */
+                    border: 2px solid #ffffff;
+                    position: relative;
+                    z-index: 10;
+                }
+                /* Firefox Fix */
+                input[type=range]::-moz-range-track {
+                    width: 100%;
+                    height: 8px;
+                    cursor: pointer;
+                    background: transparent;
+                    border-radius: 999px;
+                    border: 1px solid #e2e8f0;
+                }
+
+                input[type=range]::-moz-range-thumb {
+                    height: 24px;
+                    width: 24px;
+                    border: 2px solid #ffffff;
+                    border-radius: 50%;
+                    background: #0f172a;
+                    cursor: pointer;
+                    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.2);
+                }
+            /* --- TOGGLE SWITCH CSS --- */
+            .toggle-checkbox:checked {
+                @@apply right-0 border-primary-dark;
+            }
+
+                .toggle-checkbox:checked + .toggle-label {
+                    @@apply bg-primary-dark;
+                }
+
+                    .toggle-checkbox:checked + .toggle-label .toggle-dot {
+                        transform: translateX(100%);
+                        @@apply border-primary-dark;
+                    }
+        }
+
+        /* --- MODE CSS --- */
+        #main-container[data-mode="start"] .logo-wrapper { @@apply
+            p-6 mb-8;
+        }
+
+        #main-container[data-mode="start"] .logo-img { @@apply
+            w-48 h-48;
+        }
+
+        #main-container[data-mode="start"] .main-title { @@apply
+            text-5xl md:text-6xl mb-4;
+        }
+
+        #main-container[data-mode="start"] .desc-text { @@apply
+            text-lg opacity-100;
+        }
+
+        #main-container[data-mode="start"] .settings-wrapper { @@apply
+            opacity-0 translate-y-8 pointer-events-none absolute;
+        }
+
+        #main-container[data-mode="start"] .content-spacer { @@apply
+            flex-1 justify-center;
+        }
+
+        #main-container:not([data-mode="start"]) .logo-wrapper { @@apply
+            p-4 mb-6;
+        }
+
+        #main-container:not([data-mode="start"]) .logo-img { @@apply
+            w-24 h-24;
+        }
+
+        #main-container:not([data-mode="start"]) .main-title { @@apply
+            text-4xl md:text-5xl mb-2;
+        }
+
+        #main-container:not([data-mode="start"]) .desc-text { @@apply
+            text-sm opacity-60;
+        }
+
+        #main-container:not([data-mode="start"]) .content-spacer { @@apply
+            flex-1 justify-between py-2;
+        }
+
+        #main-container:not([data-mode="start"]) .settings-wrapper { @@apply
+            opacity-100 translate-y-0 pointer-events-auto relative;
+        }
+
+        #main-container[data-mode="test"] #settings-test { @@apply
+            block opacity-100 relative;
+        }
+
+        #main-container[data-mode="test"] #settings-practice { @@apply
+            hidden opacity-0 absolute;
+        }
+
+        #main-container[data-mode="practice"] #settings-practice { @@apply
+            block opacity-100 relative;
+        }
+
+        #main-container[data-mode="practice"] #settings-test { @@apply
+            hidden opacity-0 absolute;
+        }
+
+        #main-container[data-mode="test"] #card-test { @@apply
+            border-primary-dark bg-slate-50/20 ring-1 ring-primary-dark opacity-100;
+        }
+
+            #main-container[data-mode="test"] #card-test .icon-wrapper { @@apply
+                bg-primary-dark text-white shadow-dark-glow;
+            }
+
+            #main-container[data-mode="test"] #card-test .tile-title { @@apply
+                text-primary-dark;
+            }
+
+            #main-container[data-mode="test"] #card-test .check-icon { @@apply
+                scale-100 opacity-100;
+            }
+
+        #main-container[data-mode="test"] #card-practice { @@apply
+            opacity-60;
+        }
+
+        #main-container[data-mode="practice"] #card-practice { @@apply
+            border-primary-dark bg-slate-50/20 ring-1 ring-primary-dark opacity-100;
+        }
+
+            #main-container[data-mode="practice"] #card-practice .icon-wrapper { @@apply
+                bg-primary-dark text-white shadow-dark-glow;
+            }
+
+            #main-container[data-mode="practice"] #card-practice .tile-title { @@apply
+                text-primary-dark;
+            }
+
+            #main-container[data-mode="practice"] #card-practice .check-icon { @@apply
+                scale-100 opacity-100;
+            }
+
+        #main-container[data-mode="practice"] #card-test { @@apply
+            opacity-60;
+        }
+
+        .answer-btn-active { @@apply
+            bg-white text-primary-dark ring-1 ring-black/5 shadow-sm border-slate-100 !important;
+        }
+
+        .answer-btn-inactive { @@apply
+            text-slate-400 hover:text-slate-600 hover:bg-white/50 !important;
+        }
+
+    </style>
+</head>
+<body class="bg-bg-light text-text-main font-display min-h-screen relative soft-mesh overflow-hidden">
+
+    <div class="relative z-10 flex h-screen w-full flex-col">
+        <header class="flex items-center justify-between px-12 py-8 transition-all duration-500">
+            <div class="flex items-center gap-3">
+                <div class="size-10 rounded-xl bg-primary-dark text-white flex items-center justify-center shadow-sm">
+                    <span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">school</span>
+                </div>
+                <h2 class="text-primary-dark text-xl font-extrabold tracking-tight">VocabMaster</h2>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="px-4 py-2 bg-white rounded-full subtle-border shadow-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary-dark animate-pulse"></span>
+                    <span class="text-xs font-bold text-text-muted uppercase tracking-widest leading-none" id="session-badge">Live Session</span>
+                </div>
+                <div class="w-10 h-10 rounded-full border-2 border-white bg-slate-100 shadow-sm flex items-center justify-center overflow-hidden">
+                    <img alt="Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZMg4fIIyCTpULZg5JnOxzlP0GqCozh_Jbe8Hm6DwNh5__QcrZXkuysOZ41xaToCSp_knVvr3tpExOOhukcmackXT-bV6nf65ruvqMpIE_fSL0qEH2cQv_0zRPPSrMaYnMbJrn1i8zxpppAxq1PYFgx6D_euhiIL6PXWvpH8nj0ye1VnNqp0Yvgc4n9ey5c6Nt_XOxLXB5xBUAFdERhx55YrXZyfi68bYgjkKh8-MGqBwOI_6v5KUahvIMcbyr-wmP4PDPiOvq6A8" />
+                </div>
+            </div>
+        </header>
+
+        <form id="quiz-form" action="/start-session-default" method="POST" class="flex-1 flex flex-col h-full">
+            <input type="hidden" name="selected_mode" id="input-mode" value="start">
+
+            <main id="main-container" data-mode="start" class="flex-1 flex items-center justify-center px-6 -mt-12 transition-all duration-700">
+                <div class="w-full max-w-5xl bg-white rounded-5xl shadow-premium p-10 md:p-14 flex flex-col md:flex-row items-stretch gap-12 subtle-border relative overflow-hidden transition-all duration-700" style="min-height: 680px;">
+
+                    <div class="content-spacer flex flex-col items-center md:items-start text-center md:text-left transition-all duration-700 ease-in-out">
+                        <div class="w-full transition-all duration-700">
+                            <div class="logo-wrapper relative inline-block rounded-4xl bg-slate-50 border border-slate-100 shadow-inner group transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]">
+                                <img alt="Institution Logo" class="logo-img object-contain transition-all duration-700 ease-[cubic-bezier(0.34,1.56,0.64,1)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPZkYBfCpA2sgkZSYEdgWycummVAGEOcaYYhwR9v4aTkFozPvke8GdDbWIRtE4tnpPCmsz7tc_xuCdfsmNnJAd_82i5JWZcrcgKNyRVRKSPlybrorxNMJgsNIjw-eeSUHUdt9F2FuKKH08nYree1Ouc0ZGkNuS1CHcroec4PHI4FxBEi0NhTQYXdPTEItgodYud6_MUf6cg9ie4bQcTxRFYYRVVqfw9RhkfdqtnTQWuDbkCEdt-KYZyP3X6iw_gshvqKfQcoqYz9E" />
+                            </div>
+                            <div>
+                                <div class="flex items-center justify-center md:justify-start gap-2 mb-3">
+                                    <span class="h-[1px] w-8 bg-primary-dark/30"></span>
+                                    <h3 class="text-primary-dark font-bold tracking-[0.25em] uppercase text-[10px]">Institution Series</h3>
+                                </div>
+                                <h1 class="main-title text-text-main font-black tracking-tight leading-none transition-all duration-700 origin-left">Oxford 3000</h1>
+                                <p class="desc-text text-text-muted font-light leading-relaxed max-w-sm transition-all duration-700">
+                                    The most essential words to learn in English, selected by language experts for academic excellence.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="settings-wrapper w-full transition-all duration-700 delay-100 ease-out">
+
+                            <div id="settings-test" class="space-y-6 transition-all duration-500">
+                                <div>
+                                    <div class="flex justify-between items-end mb-3 px-1">
+                                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question Count</label>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="slider-value-display text-3xl font-black text-primary-dark">20</span>
+                                            <span class="text-xs font-bold text-slate-400">/ 50</span>
+                                        </div>
+                                    </div>
+                                    <div class="relative px-1">
+                                        <input name="test_question_count" oninput="updateSlider(this)" class="w-full appearance-none focus:outline-none" max="50" min="5" type="range" value="20" />
+                                    </div>
+                                    <div class="flex justify-between mt-2 px-1">
+                                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Min 5</span>
+                                        <span class="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Max 50</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-3 px-1">Answer Mode</label>
+                                    <input type="hidden" name="test_answer_mode" id="input-answer-mode" value="multiple_choice">
+                                    <div class="flex p-1.5 bg-slate-50 rounded-2xl border border-slate-100">
+                                        <button type="button" onclick="setAnswerType('multiple_choice')" id="btn-choice" class="answer-btn-active flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent">
+                                            <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                            Multiple Choice
+                                        </button>
+                                        <button type="button" onclick="setAnswerType('typing')" id="btn-typing" class="answer-btn-inactive flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent">
+                                            <span class="material-symbols-outlined text-base">keyboard</span>
+                                            Typing
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="settings-practice" class="space-y-6 transition-all duration-500">
+                                <div>
+                                    <div class="flex justify-between items-end mb-3 px-1">
+                                        <label class="text-xs font-bold text-slate-400 uppercase tracking-widest">Question Count</label>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="slider-value-display text-3xl font-black text-primary-dark">20</span>
+                                            <span class="text-xs font-bold text-slate-400">/ 50</span>
+                                        </div>
+                                    </div>
+                                    <div class="relative px-1">
+                                        <input name="practice_question_count" oninput="updateSlider(this)" class="w-full appearance-none focus:outline-none" max="50" min="5" type="range" value="20" />
+                                    </div>
+                                </div>
+
+                                <div class="space-y-4">
+                                    <div class="flex items-center justify-between px-1">
+                                        <span class="text-sm font-semibold text-text-main">Unasked Words Only</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="practice_unasked" class="sr-only peer toggle-checkbox">
+                                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:bg-primary-dark toggle-label transition-colors duration-300">
+                                                <div class="toggle-dot absolute top-[2px] left-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all duration-300"></div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between px-1">
+                                        <span class="text-sm font-semibold text-text-main">Practice up to current point</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="practice_current_point" checked class="sr-only peer toggle-checkbox">
+                                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:bg-primary-dark toggle-label transition-colors duration-300">
+                                                <div class="toggle-dot absolute top-[2px] left-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all duration-300"></div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center justify-between px-1">
+                                        <span class="text-sm font-semibold text-text-main">Review Mistakes Only</span>
+                                        <label class="relative inline-flex items-center cursor-pointer">
+                                            <input type="checkbox" name="practice_mistakes" class="sr-only peer toggle-checkbox">
+                                            <div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:bg-primary-dark toggle-label transition-colors duration-300">
+                                                <div class="toggle-dot absolute top-[2px] left-[2px] bg-white border-gray-300 border rounded-full h-5 w-5 transition-all duration-300"></div>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="hidden md:block w-px bg-slate-100 self-stretch"></div>
+
+                    <div class="flex flex-col justify-center flex-1 w-full max-w-md transition-all duration-500">
+                        <div class="w-full space-y-8">
+                            <div class="text-center md:text-left">
+                                <h2 class="text-slate-400 text-xs font-bold tracking-[0.25em] uppercase mb-1">Select Mode</h2>
+                                <p class="text-text-main text-2xl font-bold tracking-tight">How would you like to begin?</p>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-4">
+                                <div id="card-test" onclick="setMode('test')" class="mode-tile cursor-pointer relative flex flex-col items-center justify-center p-6 h-48 rounded-[2rem] border-2 border-slate-100 bg-white transition-all duration-500 group hover:border-primary-dark hover:opacity-100">
+                                    <div class="check-icon absolute top-3 right-3 text-primary-dark bg-white rounded-full p-0.5 shadow-sm z-10 transition-all duration-500 scale-0 opacity-0">
+                                        <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    </div>
+                                    <div class="icon-wrapper mb-4 w-12 h-12 rounded-2xl bg-slate-100 text-primary-dark flex items-center justify-center transition-all duration-300">
+                                        <span class="material-symbols-outlined text-2xl">timer</span>
+                                    </div>
+                                    <span class="tile-title text-text-main font-bold text-lg transition-colors duration-300">Test Mode</span>
+                                    <span class="text-xs text-text-muted font-medium mt-1">Timed Challenge</span>
+                                </div>
+
+                                <div id="card-practice" onclick="setMode('practice')" class="mode-tile cursor-pointer relative flex flex-col items-center justify-center p-6 h-48 rounded-[2rem] border-2 border-slate-100 bg-white transition-all duration-300 group hover:border-primary-dark hover:opacity-100">
+                                    <div class="check-icon absolute top-3 right-3 text-primary-dark bg-white rounded-full p-0.5 shadow-sm z-10 transition-all duration-500 scale-0 opacity-0">
+                                        <span class="material-symbols-outlined text-xl" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                    </div>
+                                    <div class="icon-wrapper mb-4 w-12 h-12 rounded-2xl bg-slate-100 text-primary-dark flex items-center justify-center transition-all duration-300">
+                                        <span class="material-symbols-outlined text-2xl">menu_book</span>
+                                    </div>
+                                    <span class="tile-title text-text-main font-bold text-lg transition-colors duration-300">Practice Mode</span>
+                                    <span class="text-xs text-text-muted font-medium mt-1">Learn & Review</span>
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <button type="submit" id="main-btn" class="w-full py-4 rounded-2xl bg-primary-dark text-white text-lg font-bold tracking-widest flex items-center justify-center gap-3 group transition-all duration-300 hover:bg-slate-800 active:scale-95 shadow-dark-glow">
+                                    <span id="btn-text">START</span>
+                                    <span class="material-symbols-outlined text-xl group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                                </button>
+                                <div class="flex items-center justify-center gap-2 text-xs text-text-muted font-medium">
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">schedule</span>
+                                        <span id="info-time">10 Mins</span>
+                                    </span>
+                                    <span class="text-slate-300">•</span>
+                                    <span class="flex items-center gap-1">
+                                        <span class="material-symbols-outlined text-sm">format_list_bulleted</span>
+                                        <span id="info-count">50 Words</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </form>
+
+        <footer class="p-8 text-center transition-opacity duration-500">
+            <div class="inline-block px-6 py-2 rounded-full bg-white subtle-border text-slate-400 text-[9px] font-bold uppercase tracking-[0.4em] shadow-sm">
+                VocabMaster • Form Integration Ready
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // --- SLIDER LOGIC ---
+        function updateSlider(element) {
+            // Texti güncelle
+            const display = element.closest('div').previousElementSibling.querySelector('.slider-value-display');
+            if (display) {
+                display.innerText = element.value;
+            }
+
+            // Slider'ın doluluk oranını güncelle (Siyah Background)
+            const val = parseInt(element.value);
+            const min = parseInt(element.min || 0);
+            const max = parseInt(element.max || 100);
+
+            // Yüzdelik hesapla
+            const percentage = ((val - min) / (max - min)) * 100;
+
+            // Background linear-gradient uygula
+            // %0'dan %percentage'a kadar SİYAH (#0f172a), sonrasında GRİ (#e2e8f0)
+            element.style.background = `linear-gradient(to right, #0f172a 0%, #0f172a ${percentage}%, #e2e8f0 ${percentage}%, #e2e8f0 100%)`;
+        }
+
+        // Sayfa yüklendiğinde slider'ları boya
+        document.addEventListener("DOMContentLoaded", () => {
+            const sliders = document.querySelectorAll('input[type="range"]');
+            sliders.forEach(slider => updateSlider(slider));
+        });
+
+        // --- MODE & FORM LOGIC ---
+        function setMode(mode) {
+            const container = document.getElementById('main-container');
+            const form = document.getElementById('quiz-form');
+            const modeInput = document.getElementById('input-mode');
+
+            const btnText = document.getElementById('btn-text');
+            const infoTime = document.getElementById('info-time');
+            const infoCount = document.getElementById('info-count');
+            const sessionBadge = document.getElementById('session-badge');
+
+            const currentMode = container.getAttribute('data-mode');
+            if (currentMode === mode) {
+                mode = 'start';
+            }
+
+            container.setAttribute('data-mode', mode);
+            modeInput.value = mode;
+
+            if (mode === 'test') {
+                form.action = "/UserWordList/UserWordListTest";
+                btnText.innerText = "BEGIN TEST";
+                infoTime.innerText = "~8 Mins";
+                infoCount.innerText = "20 Questions";
+                sessionBadge.innerText = "Test Session";
+            } else if (mode === 'practice') {
+                form.action = "/UserWordList/UserWordListPractise";
+                btnText.innerText = "START PRACTICE";
+                infoTime.innerText = "No Limit";
+                infoCount.innerText = "20 Words";
+                sessionBadge.innerText = "Practice Session";
+            } else {
+                form.action = "/start-session-default";
+                btnText.innerText = "START";
+                infoTime.innerText = "10 Mins";
+                infoCount.innerText = "50 Words";
+                sessionBadge.innerText = "Live Session";
+            }
+        }
+
+        function setAnswerType(type) {
+            document.getElementById('input-answer-mode').value = type;
+            const btnChoice = document.getElementById('btn-choice');
+            const btnTyping = document.getElementById('btn-typing');
+
+            if (type === 'multiple_choice') {
+                btnChoice.className = "answer-btn-active flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent";
+                btnTyping.className = "answer-btn-inactive flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent";
+            } else {
+                btnTyping.className = "answer-btn-active flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent";
+                btnChoice.className = "answer-btn-inactive flex-1 py-3 px-4 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-2 border border-transparent";
+            }
+        }
+    </script>
+
+</body>
+</html>

@@ -28,8 +28,6 @@
 
         public WordList? WordList { get; set; }
 
-        public int? PartialWordListId { get; set; }
-
-        public PartialWordList? PartialWordList { get; set; }
+        public List<UserWord> UserWords { get; set; }
     }
 }

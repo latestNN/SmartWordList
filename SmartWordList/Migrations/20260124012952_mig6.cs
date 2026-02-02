@@ -5,13 +5,13 @@
 namespace SmartWordList.Migrations
 {
     /// <inheritdoc />
-    public partial class mig_wordList_edited : Migration
+    public partial class mig6 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "LogoUrl",
+                name: "BackgroundPhotoUrl",
                 table: "wordLists",
                 type: "nvarchar(max)",
                 nullable: true);
@@ -21,7 +21,7 @@ namespace SmartWordList.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "LogoUrl",
+                name: "BackgroundPhotoUrl",
                 table: "wordLists");
         }
     }

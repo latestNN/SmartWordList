@@ -19,6 +19,10 @@
 
         public WeekPartialWordList? WeekPartialWordList { get; set; }
 
+        public int? PartialWordListId { get; set; }
+
+        public PartialWordList? PartialWordList { get; set; }
+
         public int WordId { get; set; }
 
         public Word Word { get; set; }

@@ -13,15 +13,14 @@ namespace SmartWordList.Models.Entities
         public string? Organisation { get; set; }
 
         public string? LogoUrl { get; set; }
+        public string? BackgroundPhotoUrl { get; set; }
 
 
 
         public List<Word>? Words { get; set; }
         public List<PartialWordList>? PartialWordLists { get; set; }
 
-        public string? AppUserId { get; set; }
 
-        public AppUser? AppUser { get; set; }
 
     }
 }

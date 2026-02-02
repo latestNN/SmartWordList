@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SmartWordList.Models.Authentication;
 using SmartWordList.Models.Context;
 using SmartWordList.Models.Entities;
+using System.Threading.Tasks;
 
 namespace SmartWordList.Controllers
 {
@@ -31,13 +32,15 @@ namespace SmartWordList.Controllers
             return View(words);
         }
 
-        public IActionResult WordListTest(int id)
+        public async Task<IActionResult> WordListTest(int id)
         {
-            var user = _userManager.GetUserAsync(User).Result;
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.Users.Include(x => x.PartialWordLists).FirstOrDefaultAsync(x => x.Id == userId);
             var worldList = _context.wordLists.FirstOrDefault(x => x.Id == id);
-            if(user == null || worldList == null)
+            if(user != null && worldList != null)
             {
-                if(user.WordLists.Any(x => x.Name == worldList.Name))
+                bool exists = user.PartialWordLists.Any(x => x.WordListId == worldList.Id);
+                if (exists == false)
                 {
                     PartialWordList partialWordList = new PartialWordList()
                     {
@@ -50,6 +53,7 @@ namespace SmartWordList.Controllers
                     _context.partialWordLists.Add(partialWordList);
                     _context.SaveChanges();
                 }
+
                 
             }
             
@@ -62,46 +66,62 @@ namespace SmartWordList.Controllers
             return View();
         }
 
-        public IActionResult SaveWordToPartial(int id)
+        public async Task<IActionResult> SaveWordToPartialAsync(int id)
         {
             var word = _context.words.FirstOrDefault(x => x.Id == id);
-            if(word == null)
+            if(word != null)
             {
-                var user = _userManager.GetUserAsync(User).Result;
+                var userId = _userManager.GetUserId(User);
+                var user = await _userManager.Users.Include(x => x.PartialWordLists).FirstOrDefaultAsync(x => x.Id == userId);
                 var partialWordList = user.PartialWordLists.Where(x => x.WordListId == word.WordListId).FirstOrDefault();
+                UserWord userWord = new UserWord()
+                {
+                    WordId = word.Id,
+                    PartialWordListId = partialWordList.Id
+                };
+                
                 TempData["PartialWordListId"] = partialWordList.Id;
-                partialWordList.Words.Add(word);
+                _context.userWords.Add(userWord);
                 _context.SaveChanges();
             }
             int wordListId = Convert.ToInt32(TempData["wordListId"]);
             return RedirectToAction("WordListTest", new {id = wordListId });
         }
 
-        public IActionResult CreateWeekPartialWordList()
+        public async Task<IActionResult> CreateWeekPartialWordListAsync()
         {
-            var user = _userManager.GetUserAsync(User).Result;
+            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.Users.Include(x => x.PartialWordLists).FirstOrDefaultAsync(x => x.Id == userId);
             int partialWordListId = Convert.ToInt32(TempData["PartialWordListId"]);
-            var partialWordList = _context.partialWordLists.Include(x => x.Words).FirstOrDefault(x => x.Id == partialWordListId);
-            int wordCount = partialWordList.Words.Count;
-            int count = 0;
-            int weekNumber = 0;
-            var weekPartialWordList = new WeekPartialWordList() { };
-            foreach (var word in partialWordList.Words)
+            var partialWordList = _context.partialWordLists.Include(x => x.UserWords).FirstOrDefault(x => x.Id == partialWordListId);
+            int wordCount = partialWordList.UserWords.Count();
+            int count = 1;
+            int weekNumber = 1;
+            WeekPartialWordList weekPartialWordList = new WeekPartialWordList() 
             {
-                if(count == 0 || count == 5)
+                AppUserId = user.Id,
+                Name = "Week - " + weekNumber.ToString(),
+                WeekNumber = weekNumber,
+                PartialWordListId = partialWordList.Id
+
+            };
+      
+            foreach (var word in partialWordList.UserWords)
+            {
+                if(count == 5)
                 {
-                    weekPartialWordList.AppUserId = user.Id;
-                    weekNumber++;
-                    weekPartialWordList.Name = "Week - " + weekNumber.ToString();
-                    weekPartialWordList.WeekNumber = weekNumber;
+                    weekPartialWordList = new WeekPartialWordList() 
+                    { 
+                        AppUserId = user.Id,
+                        Name = "Week - " + weekNumber.ToString(),
+                        WeekNumber = ++weekNumber,
+                        PartialWordListId = partialWordList.Id
+                    }; 
+                    count = 1;
 
                 }
-                UserWord userWord = new UserWord()
-                {
-                    WordId = word.Id,
-                    WeekPartialWordListId = weekPartialWordList.Id
-                };
-                weekPartialWordList.UserWords.Add(userWord);
+
+                weekPartialWordList.UserWords.Add(word);
                 count++;
                 if(count == 5 || count == wordCount)
                 {
@@ -110,7 +130,7 @@ namespace SmartWordList.Controllers
                 }
             }
             
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("UserWordLists", "UserWordList");
         }
     }
 
