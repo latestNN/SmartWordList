@@ -43,19 +43,24 @@ namespace SmartWordList.Controllers
         [HttpPost]
         public IActionResult UserWordListTest(QuizSettingsViewModel model)
         {
-            int weakListId = (int)TempData["weakListId"];
+            int weakListId = 0;
+            if(TempData["weakListId"] is int value)
+            {
+                weakListId = value;
+            }
+            
             TempData["WordCount"] = model.TestQuestionCount;
-            return RedirectToAction("UserWeakWordListQuiz" , weakListId);
+            return RedirectToAction("UserWeakWordListQuiz" , new { weakListId = weakListId });
         }
 
-        public IActionResult UserWeakWordListQuiz(int id)
+        public IActionResult UserWeakWordListQuiz(int weakListId)
         {
             int wordCount = (int)TempData["WordCount"];
             wordCount = 10;
             if (QuestionCount < wordCount)
             {
                 QuestionCount++;
-                var word = _context.userWords.Include(x => x.Word).ThenInclude(y => y.TrMeans).Where(z => z.WeekPartialWordListId == id).OrderBy(x => Guid.NewGuid()).FirstOrDefault();
+                var word = _context.userWords.Include(x => x.Word).ThenInclude(y => y.TrMeans).Where(z => z.WeekPartialWordListId == weakListId).FirstOrDefault();
                 return View(word);
             }
             else
